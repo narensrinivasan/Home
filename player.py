@@ -4,7 +4,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.size = 35
+        self.size = 50
         super(Player, self).__init__()
         self.surf = pygame.Surface((self.size, self.size))
         self.surf.fill((0,0,0))

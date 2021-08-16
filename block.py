@@ -1,13 +1,13 @@
 import pygame
 
 class Block(pygame.sprite.Sprite):
-    def __init__(self, posX, posY, sprite):
+    def __init__(self, posX, posY, size, sprite):
         self.solid = True
         self.posX = posX
         self.posY = posY
-        self.size = 50
+        self.size = size
         super(Block, self).__init__()
-        self.rect = pygame.Rect(posX,posY,50,50)
+        self.rect = pygame.Rect(posX,posY,self.size,self.size)
         self.image = pygame.image.load(sprite)
 
     def getSize(self):
