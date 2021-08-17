@@ -22,5 +22,5 @@ class Block(pygame.sprite.Sprite):
     def getPos(self):
         return (self.posY,self.posX)
 
-    def setSprite(self, sprite = "C:/Users/nitna/OneDrive/Documents/GitHub/ClairDOmbre/floor_wall_blocks.png"):
+    def setSprite(self, sprite = "floor_wall_blocks.png"):
         self.image = pygame.image.load(sprite)

@@ -3,16 +3,15 @@ from block import Block
 class Builder:
 
     def __init__(self, SCREEN_WIDTH = 1200, SCREEN_HEIGHT = 800, NUM_ROOMS = 2, BLOCK_SIZE = 50):
-        self.rooms = []
+        self.blocks = []
         self.currentRoom = -1
         self.SCREEN_WIDTH = SCREEN_WIDTH
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
         self.blockSize = BLOCK_SIZE
-        for i in range(NUM_ROOMS):
-            self.rooms.append([])
-            for x in range(0,SCREEN_HEIGHT, BLOCK_SIZE):
-                for y in range(0,SCREEN_WIDTH, BLOCK_SIZE):
-                    self.rooms[i].append(Block(x,y, BLOCK_SIZE, "C:/Users/nitna/OneDrive/Documents/GitHub/ClairDOmbre/floor_blocks_75.png"))
+        self.numRooms = NUM_ROOMS
+        for x in range(0,SCREEN_HEIGHT, BLOCK_SIZE):
+            for y in range(0,SCREEN_WIDTH, BLOCK_SIZE):
+                self.blocks.append(Block(x,y, BLOCK_SIZE, "floor_blocks_75.png"))
             
     #Receives Room rectangle codes, then changes corresponding blocks into background blocks accordingly
     # YEAH MATH!!! (I am not good at math)
@@ -24,19 +23,22 @@ class Builder:
         index += (room[1]*width)
         for j in range(index,index+(width*room[2]), width) :
             for k in range(room[3]) :
-                self.rooms[self.currentRoom][j+k].setSprite("C:/Users/nitna/OneDrive/Documents/GitHub/ClairDOmbre/background_tile_75.png")
-                self.rooms[self.currentRoom][j+k].setSolid(False)  
+                self.blocks[j+k].setSprite("background_tile_75.png")
+                self.blocks[j+k].setSolid(False)  
         return bounds
     
     def nextRoom(self) :
         self.currentRoom += 1
-        if self.currentRoom > len(self.rooms)-1:
+        if self.currentRoom > self.numRooms-1:
             return False
+        for block in self.blocks:
+            block.setSprite("floor_blocks_75.png")
+            block.setSolid(True)
         return True
             
     #provides blocks for displaying
     def yieldBlocks(self):
-        for block in self.rooms[self.currentRoom]:
+        for block in self.blocks:
             yield block
     
     def getBounds(self):

@@ -13,7 +13,7 @@ class PropManager:
         currentRoom = self.rooms[self.currentRoom]
         doorX = (currentRoom[0] + currentRoom[3]-1)*self.BLOCK_SIZE
         doorY = (currentRoom[1] + currentRoom[2]-2)*self.BLOCK_SIZE
-        self.door = Prop(doorX,doorY,self.BLOCK_SIZE,self.BLOCK_SIZE*2, True, "C:/Users/nitna/OneDrive/Documents/GitHub/ClairDOmbre/door.png")
+        self.door = Prop(doorX,doorY,self.BLOCK_SIZE,self.BLOCK_SIZE*2, True, "door.png")
         self.props.append(self.door)
     
     def addProp(self, prop):
