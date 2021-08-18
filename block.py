@@ -20,7 +20,7 @@ class Block(pygame.sprite.Sprite):
         self.solid = solidStatus
 
     def getPos(self):
-        return (self.posY,self.posX)
+        return (self.posX,self.posY)
 
     def setSprite(self, sprite = "floor_wall_blocks.png"):
         self.image = pygame.image.load(sprite)

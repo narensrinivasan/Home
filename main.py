@@ -4,9 +4,8 @@ from pygame.locals import *
 from player import Player
 from builder import Builder
 from prop import PropManager
-
-
-
+import cProfile
+import re
 
 pygame.init()
 
@@ -14,10 +13,13 @@ SCREEN_WIDTH = 1050
 SCREEN_HEIGHT = 900
 BLOCK_SIZE = 75
 
+clock = pygame.time.Clock()
+
 screen = pygame.display.set_mode([SCREEN_WIDTH,SCREEN_HEIGHT])
 screen.fill((0,0,0))
 
-levels = [[1,3,5,12],[2,3,2,5]]
+ # ROOMS DEFINED BY : (y Pos, x Pos, Width, Height) confusing, I know.
+levels = [[3,1,12,5],[3,2,5,2]]
 
 builder = Builder(SCREEN_WIDTH, SCREEN_WIDTH, len(levels), BLOCK_SIZE)
 propManager = PropManager(levels)
@@ -48,12 +50,14 @@ class Fader(pygame.sprite.Sprite):
         self.rect = pygame.Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT)
 
     def fadeOut(self):
+        time.sleep(0.01)
         if self.currentSprite >= len(self.sprites)-1:
             return False
         self.currentSprite += 1
         return True
     
     def fadeIn(self):
+        time.sleep(0.01)
         if self.currentSprite <= 0:
             return False
         self.currentSprite -= 1
@@ -61,8 +65,15 @@ class Fader(pygame.sprite.Sprite):
 
 fader = Fader()
 fading = True
-#main loop
+
+
+#==================================================
+#MAIN LOOP
+
 while running :
+    #set framerate
+    clock.tick(90)
+
     #generate next room
     if(nextRoom):
         fading = True
@@ -73,6 +84,8 @@ while running :
         if not builder.nextRoom():
             break
         builder.buildNewRoom(levels[currentRoom])
+        
+        #collision bounds
         bounds = builder.getBounds()
         xBound = bounds[0]
         farBound = bounds[2]
@@ -88,8 +101,7 @@ while running :
         if event.type == QUIT:
             running = False
 
-    #player movement
-    player.update(xBound, farBound)
+    
 
     #check for prop activation
     propManager.checkActivation(player.getPos()[0], player.getSize())
@@ -98,18 +110,29 @@ while running :
     if propManager.doorActivated():
         nextRoom = True
 
+    #player movement
     
     #display
-    for block in builder.yieldBlocks() :
-        screen.blit(block.image, block.getPos())
-    for prop in propManager.yieldBackgroundProps() :
-        screen.blit(prop.image, prop.getPos())
-    screen.blit(player.surf, player.getPos())
-
-    if(fading): 
+    if fading : 
         screen.blit(fader.sprites[fader.currentSprite],fader.rect)
         pygame.display.flip()
-        fading = fader.fadeIn()
+        fading = fader.fadeIn()    
+        for block in builder.blocks:
+            screen.blit(block.image, block.rect)
+        for prop in propManager.props:
+            screen.blit(prop.image, prop.rect)
+    
+    for block in builder.blocks:
+        if pygame.sprite.collide_rect(player,block):
+            screen.blit(block.image, block.getPos())
+    
+    for prop in propManager.props :
+        if pygame.sprite.collide_rect(player,prop):
+            screen.blit(prop.image, prop.rect)
+    
+    player.update(xBound, farBound) 
+    screen.blit(player.surf, player.rect)
+    
     #update display
     pygame.display.flip()
 #main loop
@@ -121,6 +144,7 @@ while fading:
     fading = fader.fadeOut()
 
 pygame.quit
+
 
 
 

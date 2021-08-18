@@ -35,18 +35,14 @@ class Builder:
             block.setSprite("floor_blocks_75.png")
             block.setSolid(True)
         return True
-            
-    #provides blocks for displaying
-    def yieldBlocks(self):
-        for block in self.blocks:
-            yield block
+  
     
     def getBounds(self):
         xBound = self.SCREEN_WIDTH
         farBound = 0
         yBound = 0
         blockSize = 0
-        for block in self.yieldBlocks():
+        for block in self.blocks:
             if not block.getSolid():
                 x = block.getPos()[0]
                 y = block.getPos()[1]

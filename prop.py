@@ -1,3 +1,4 @@
+from re import X
 import pygame
 
 class PropManager:
@@ -11,10 +12,12 @@ class PropManager:
         self.currentRoom+=1
         self.props.clear()
         currentRoom = self.rooms[self.currentRoom]
-        doorX = (currentRoom[0] + currentRoom[3]-1)*self.BLOCK_SIZE
-        doorY = (currentRoom[1] + currentRoom[2]-2)*self.BLOCK_SIZE
+        doorY = (currentRoom[0] + currentRoom[3]-2)*self.BLOCK_SIZE
+        doorX = (currentRoom[1] + currentRoom[2]-1)*self.BLOCK_SIZE
         self.door = Prop(doorX,doorY,self.BLOCK_SIZE,self.BLOCK_SIZE*2, True, "door.png")
         self.props.append(self.door)
+        if(self.currentRoom == 0):
+            self.loadRoom1()
     
     def addProp(self, prop):
         self.props.append(prop)
@@ -23,15 +26,16 @@ class PropManager:
         for prop in self.props:
             prop.activate(x, size)
 
-    def yieldBackgroundProps(self):
-        for prop in self.props:
-            if prop.getBackground():
-                yield prop
+    def loadRoom1(self):
+        y = (self.rooms[self.currentRoom][0]-1)*self.BLOCK_SIZE
+        x = (self.rooms[self.currentRoom][1]-1)*self.BLOCK_SIZE
+        ySize = (self.rooms[self.currentRoom][3]+2)*self.BLOCK_SIZE
+        xSize = (self.rooms[self.currentRoom][2]+2)*self.BLOCK_SIZE
+        sprite = "room1backgroundprops_scaled.png"
+        self.props.append(Prop(x,y,xSize,ySize,True,sprite))
 
     def doorActivated(self):
         return self.door.getActivated()
-
-
 
 class Prop(pygame.sprite.Sprite):
     def __init__(self, x, y, xSize, ySize, isBackground, sprite):
@@ -57,6 +61,8 @@ class Prop(pygame.sprite.Sprite):
     def place(self, newX, newY):
         self.x = newX
         self.y = newY
+        self.rect.x = self.x
+        self.rect.y = self.y
     
     def getBackground(self):
         return self.isBackground
