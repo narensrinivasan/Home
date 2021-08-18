@@ -9,13 +9,17 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.Surface((self.size, self.size))
         self.surf.fill((0,0,0))
         self.rect = self.surf.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
     
     def place(self,newX,newY):
         self.x = newX
+        self.rect.x = newX
         self.y = newY
+        self.rect.y = newY
 
     def getPos(self):
-        return (self.x,self.y)
+        return (self.rect.x,self.rect.y)
 
     def getSize(self):
         return self.size
@@ -32,5 +36,6 @@ class Player(pygame.sprite.Sprite):
         self.x += movement
         if self.x < leftBound:
             self.x = leftBound
-        if self.x + self.size > rightBound:
+        elif self.x + self.size > rightBound:
             self.x = rightBound-self.size
+        self.rect.x = self.x
