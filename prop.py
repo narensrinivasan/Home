@@ -14,7 +14,7 @@ class PropManager:
         currentRoom = self.rooms[self.currentRoom]
         doorY = (currentRoom[0] + currentRoom[3]-2)*self.BLOCK_SIZE
         doorX = (currentRoom[1] + currentRoom[2]-1)*self.BLOCK_SIZE
-        self.door = Prop(doorX,doorY,self.BLOCK_SIZE,self.BLOCK_SIZE*2, doorX, self.BLOCK_SIZE, True, "door.png")
+        self.door = Prop(doorX,doorY,self.BLOCK_SIZE,self.BLOCK_SIZE*2, doorX, self.BLOCK_SIZE, True, "door.png", "door.png")
         self.door.isDoor = True
         self.props.append(self.door)
         if(self.currentRoom == 0):
@@ -45,24 +45,34 @@ class PropManager:
         activateX = 8*self.BLOCK_SIZE
         activateWidth = 2*self.BLOCK_SIZE
         sprite = "room1.png"
-        self.props.append(Prop(x,y,xSize,ySize,activateX,activateWidth,True,sprite))
+        self.props.append(Prop(x,y,xSize,ySize,activateX,activateWidth,True, sprite, sprite))
 
     def doorActivated(self):
         return self.door.getActivated()
 
 class Prop(pygame.sprite.Sprite):
-    def __init__(self, x, y, xSize, ySize, activateX, activateWidth, isBackground, sprite):
+    def __init__(self, x, y, xSize, ySize, activateX, activateWidth, isBackground, sprite, activateSprite):
         super(Prop, self).__init__()
+
         self.isActivated = False
+
         self.x = x
         self.y = y
+
         self.isDoor = False
+
         self.xSize = xSize
         self.ySize = ySize
+
         self.activateX = activateX
         self.activateWidth = activateWidth
+
         self.rect = pygame.Rect(x, y, xSize, ySize)
+
+        self.activateImage = pygame.image.load(activateSprite)
         self.image = pygame.image.load(sprite)
+        self.currentImage = self.image
+
         self.isBackground = isBackground
     
     def activate(self, x, size):
@@ -72,6 +82,7 @@ class Prop(pygame.sprite.Sprite):
         if keyState[pygame.K_UP]:
             if x + (size/2) >= self.activateX and x <= self.activateX+ self.activateWidth - (size/2): 
                 self.isActivated = True
+                self.currentImage = self.activateImage
                 return True
 
     def getPos(self):
