@@ -21,6 +21,23 @@ class Builder:
         bounds = ((int) (self.SCREEN_WIDTH/2),(int)(self.SCREEN_HEIGHT/2))
         index = room[0]
         index += (room[1]*width)
+        for block in self.blocks:
+            y = (int)(block.posX/self.blockSize)
+            x = (int)(block.posY/self.blockSize)
+            if x < room[0]-3 or x >= room[0] + room[3] +3:
+                block.setSprite("floor_blocks_dark3.png")
+            elif x < room[0]-2 or x>= room[0] + room[3] + 2:
+                block.setSprite("floor_blocks_dark2.png")
+            elif x < room[0]-1 or x>= room[0] + room[3] + 1:
+                block.setSprite("floor_blocks_dark1.png") 
+
+            if y < room[1]-3 or y >= room[1] + room[2] +3:
+                block.setSprite("floor_blocks_dark3.png")
+            elif y < room[1]-2 or y>= room[1] + room[2] + 2:
+                block.setSprite("floor_blocks_dark2.png")
+            elif y < room[1]-1 or y>= room[1] + room[2] + 1:
+                block.setSprite("floor_blocks_dark1.png") 
+
         for j in range(index,index+(width*room[2]), width) :
             for k in range(room[3]) :
                 self.blocks[j+k].setSprite("background_tile_75.png")

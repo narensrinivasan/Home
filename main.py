@@ -19,7 +19,7 @@ screen = pygame.display.set_mode([SCREEN_WIDTH,SCREEN_HEIGHT])
 screen.fill((0,0,0))
 
  # ROOMS DEFINED BY : (y Pos, x Pos, Width, Height) confusing, I know.
-levels = [[3,1,12,5],[3,2,5,2]]
+levels = [[3,1,12,5],[5,0,14,4],[3,1,12,6]]
 
 builder = Builder(SCREEN_WIDTH, SCREEN_WIDTH, len(levels), BLOCK_SIZE)
 propManager = PropManager(levels)
