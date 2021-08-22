@@ -50,14 +50,14 @@ class Fader(pygame.sprite.Sprite):
         self.rect = pygame.Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT)
 
     def fadeOut(self):
-        time.sleep(0.01)
+        time.sleep(0.02)
         if self.currentSprite >= len(self.sprites)-1:
             return False
         self.currentSprite += 1
         return True
     
     def fadeIn(self):
-        time.sleep(0.01)
+        time.sleep(0.02)
         if self.currentSprite <= 0:
             return False
         self.currentSprite -= 1
@@ -72,7 +72,7 @@ fading = True
 
 while running :
     #set framerate
-    clock.tick(90)
+    clock.tick(60)
 
     #generate next room
     if(nextRoom):
@@ -104,7 +104,8 @@ while running :
     
 
     #check for prop activation
-    propManager.checkActivation(player.getPos()[0], player.getSize())
+    if propManager.checkActivation(player.getPos()[0], player.getSize()):
+        player.foundSomething = True
 
     #check if door is active, go to next room if true
     if propManager.doorActivated():
@@ -122,16 +123,18 @@ while running :
         for prop in propManager.props:
             screen.blit(prop.image, prop.rect)
     
+    #block blit checking
     for block in builder.blocks:
         if pygame.sprite.collide_rect(player,block):
             screen.blit(block.image, block.getPos())
     
+    #prop blit checking
     for prop in propManager.props :
         if pygame.sprite.collide_rect(player,prop):
             screen.blit(prop.image, prop.rect)
     
     player.update(xBound, farBound) 
-    screen.blit(player.surf, player.rect)
+    screen.blit(player.currentImage, player.rect)
     
     #update display
     pygame.display.flip()
