@@ -1,5 +1,5 @@
 # ClairDOmbre
-A simple demo game made in python
+A simple demo game made in python. Help a little blob boy return to his mother.
 
 Requires pygame to run, in console type: pip install pygame
 
