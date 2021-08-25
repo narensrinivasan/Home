@@ -19,6 +19,10 @@ class PropManager:
         self.props.append(self.door)
         if(self.currentRoom == 0):
             self.loadRoom1()
+        elif(self.currentRoom == 1):
+            self.loadRoom2()
+        elif(self.currentRoom == 2):
+            self.loadRoom3()
     
     def addProp(self, prop):
         self.props.append(prop)
@@ -46,6 +50,28 @@ class PropManager:
         activateWidth = 2*self.BLOCK_SIZE
         sprite = "room1.png"
         self.props.append(Prop(x,y,xSize,ySize,activateX,activateWidth,True, sprite, sprite))
+
+    def loadRoom2(self):
+        y = (self.rooms[self.currentRoom][0]-1)*self.BLOCK_SIZE
+        x = 0
+        ySize = (self.rooms[self.currentRoom][3]+2)*self.BLOCK_SIZE
+        xSize = (self.rooms[self.currentRoom][2])*self.BLOCK_SIZE
+        activateX = 3*self.BLOCK_SIZE
+        activateWidth = self.BLOCK_SIZE
+        sprite = "room2.png"
+        activateSprite = "room2_activated.png"
+        self.props.append(Prop(x,y,xSize,ySize,activateX,activateWidth,True, sprite, activateSprite))
+
+    def loadRoom3(self):
+        y = (self.rooms[self.currentRoom][0]-1)*self.BLOCK_SIZE
+        x = (self.rooms[self.currentRoom][1]-1)*self.BLOCK_SIZE
+        ySize = (self.rooms[self.currentRoom][3]+2)*self.BLOCK_SIZE
+        xSize = (self.rooms[self.currentRoom][2]+2)*self.BLOCK_SIZE
+        activateX = 7*self.BLOCK_SIZE
+        activateWidth = 6*self.BLOCK_SIZE
+        sprite = "room3.png"
+        self.door = Prop(x,y,xSize,ySize,activateX,activateWidth,True, sprite, sprite)
+        self.props[0] = self.door
 
     def doorActivated(self):
         return self.door.getActivated()

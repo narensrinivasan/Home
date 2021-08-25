@@ -131,7 +131,7 @@ while running :
     #prop blit checking
     for prop in propManager.props :
         if pygame.sprite.collide_rect(player,prop):
-            screen.blit(prop.image, prop.rect)
+            screen.blit(prop.currentImage, prop.rect)
     
     player.update(xBound, farBound) 
     screen.blit(player.currentImage, player.rect)
